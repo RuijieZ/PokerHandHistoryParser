@@ -265,5 +265,21 @@ namespace HandHistories.Parser.UnitTests.Parsers.FastParserTests.PokerStars
 
             Assert.AreEqual(new HandAction("RECHUK", HandActionType.SHOW, 0m, Street.Showdown), handAction);
         }
+
+        [Test]
+        public void ParseLimit_WithTwoConsecutivesSpacesBeforeLimit_Works()
+        {
+            Limit limit = GetPokerStarsFastParser().ParseLimit("Poker Hand #HD3229201: Hold'em No Limit  ($0.5/$1) - 2018/11/08 11:20:15\r\n");
+
+            Assert.AreEqual(Limit.FromSmallBlindBigBlind(0.5m, 1m, Currency.USD), limit);
+        }
+
+        [Test]
+        public void ParseLimit_WithOneSpaceBeforeLimit_Works()
+        {
+            Limit limit = GetPokerStarsFastParser().ParseLimit("Poker Hand #HD3229201: Hold'em No Limit ($0.5/$1) - 2018/11/08 11:20:15\r\n");
+
+            Assert.AreEqual(Limit.FromSmallBlindBigBlind(0.5m, 1m, Currency.USD), limit);
+        }
     }
 }
